@@ -25,3 +25,11 @@ build:
         manual:
           - src: "**/*.js"
             dest: .
+    - image: us.gcr.io/mirval-system/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .

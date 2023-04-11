@@ -6,7 +6,7 @@ const start = async(): Promise<void> => {
     if(!process.env.JWT_KEY) {
         throw new Error('JWT_KEY must be defined');
     }
-
+    
     if(!process.env.MONGO_URI) {
         throw new Error("MONGO_URI must be defined");
     }
@@ -19,7 +19,7 @@ const start = async(): Promise<void> => {
     }
 
     app.listen(3000, () => {
-        console.log('Listening on port 3000 yeah');
+        console.log('Listening on port 3000 tickets');
     });
 }
 

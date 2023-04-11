@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: tickets-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: tickets
   template:
     metadata:
       labels:
-        app: auth
+        app: tickets
     spec:
       containers:
-        - name: auth
-          image: us.gcr.io/mirval-system/auth
+        - name: tickets
+          image: us.gcr.io/mirval-system/tickets
           env:
             - name: JWT_KEY
               valueFrom:
@@ -24,19 +24,19 @@ spec:
             - name: MONGO_URI
               valueFrom:
                 secretKeyRef:
-                  name: mongo-secret-auth
+                  name: mongo-secret
                   key: MONGO_URI
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: tickets-srv
 spec:
   type: ClusterIP
   selector:
-    app: auth
+    app: tickets
   ports:
-    - name: auth
+    - name: tickets
       protocol: TCP
       port: 3000
       targetPort: 3000
