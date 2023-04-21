@@ -3,6 +3,8 @@ import { body } from 'express-validator';
 
 import { NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@mirval/common';
 import { Ticket } from './../models/ticket';
+import { TicketUpdatedPublisher } from './../events/publishers/ticket-updated-publisher';
+import { natsWrapper } from './../nats-wrapper';
 
 const router = express.Router();
 
@@ -18,6 +20,13 @@ router.put('/api/tickets/:id', requireAuth, [
     const ticket = req.body;
     const ticketUpdate = await Ticket.findByIdAndUpdate(req.params.id, ticket);
     
+    await new TicketUpdatedPublisher(natsWrapper.client).publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+    });
+
     if(!ticketUpdate) {
         throw new NotFoundError();
     }
